@@ -185,14 +185,8 @@ if mods.BreakDownDisplay and mods.BreakDownDisplay ~= "Off" then
 			local width = GAMESTATE:GetCurrentStyle(player):GetWidth(player)
 			local NumColumns = GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()
 			
-			-- Set the size of the measure counter according to the size mod
-			if mods.MeasureCounterSize == "Big" then
-				self:zoom(0.5):shadowlength(1):horizalign(center)
-			elseif mods.MeasureCounterSize == "Humongous" then
+			-- TO-DO create custom size settings for the side breakdown view
 				self:zoom(0.75):shadowlength(1):horizalign(center)
-			else
-				self:zoom(0.35):shadowlength(1):horizalign(center)
-			end
 
 			-- Set the position for the measurecounter according to the selected X and Y axis mods
 				self:xy( GetNotefieldX(player) - (width/1.9), _screen.cy + _screen.cy/4)
