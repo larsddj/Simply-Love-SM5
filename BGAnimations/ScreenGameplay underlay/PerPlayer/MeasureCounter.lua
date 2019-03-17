@@ -31,7 +31,7 @@ local function InitializeMeasureCounter()
 	local sepstring = tostring(seperateStreams)
 	SCREENMAN:SystemMessage(sepstring)
 
-	-- TO-DO needs to be rewritten in a more robust/elegant way
+	-- Fills the array that's used to gather the string contents
 		for i=0,5 do	
 			if (seperateStreams[currentStreamNumber+i]) ~= nil then
 				mTextArray[currentStreamNumber+i] = seperateStreams[currentStreamNumber+i]
@@ -41,6 +41,7 @@ local function InitializeMeasureCounter()
 		end
 end
 
+-- Splitter function that is used to split the breakdown into individual streams
 function Splitter(inputstr, sep)
 	if sep == nil then
 			sep = "/"
@@ -76,7 +77,7 @@ local function Update(self, delta)
 			current_stream_length = streams.Measures[stream_index].streamEnd - streams.Measures[stream_index].streamStart
 			current_count = math.floor(current_measure - streams.Measures[stream_index].streamStart) + 1
 
-			-- checks MeasureCounterStyle and set next measuretext
+			-- Checks MeasureCounterStyle and set next measuretext
 			if mods.MeasureCounterStyle == "Traditional" then
 				stream_left = tostring(current_count .. "/" .. current_stream_length)
 			elseif mods.MeasureCounterStyle == "Subtraction" then
@@ -185,10 +186,10 @@ if mods.BreakDownDisplay and mods.BreakDownDisplay ~= "Off" then
 			local width = GAMESTATE:GetCurrentStyle(player):GetWidth(player)
 			local NumColumns = GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()
 			
-			-- TO-DO create custom size settings for the side breakdown view
+			-- TO-DO create custom size settings
 				self:zoom(0.75):shadowlength(1):horizalign(center)
 
-			-- Set the position for the measurecounter according to the selected X and Y axis mods
+			-- TO-DO create custom position settings 
 				self:xy( GetNotefieldX(player) - (width/1.9), _screen.cy + _screen.cy/4)
 
 		end
