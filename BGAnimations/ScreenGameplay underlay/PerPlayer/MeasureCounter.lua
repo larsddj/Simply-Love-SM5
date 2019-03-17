@@ -190,7 +190,7 @@ if mods.BreakDownDisplay and mods.BreakDownDisplay ~= "Off" then
 				self:zoom(0.75):shadowlength(1):horizalign(center)
 
 			-- TO-DO create custom position settings 
-				self:xy( GetNotefieldX(player) - (width/1.9), _screen.cy + _screen.cy/4)
+				self:xy( GetNotefieldX(player) - (width/1.7), _screen.cy + _screen.cy/4)
 
 		end
 	}
