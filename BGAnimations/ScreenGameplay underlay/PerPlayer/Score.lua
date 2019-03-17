@@ -12,7 +12,7 @@ return Def.BitmapText{
 	Name=ToEnumShortString(player).."Score",
 	InitCommand=function(self)
 		self:valign(1):halign(1)
-
+		-- TO-DO rewrite code to seperate each player to avoid funky 2 player score move interactions with density graph hide
 		if SL.Global.GameMode == "StomperZ" then
 			self:zoom(0.4):x( WideScale(160, 214) ):y(20)
 			if player == PLAYER_2 then
