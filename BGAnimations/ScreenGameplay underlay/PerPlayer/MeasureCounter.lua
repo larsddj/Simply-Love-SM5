@@ -29,7 +29,6 @@ local function InitializeMeasureCounter()
 	-- We need to split up the breakdown into individual streams
 	seperateStreams = Splitter(bdown, sep)
 	local sepstring = tostring(seperateStreams)
-	SCREENMAN:SystemMessage(sepstring)
 
 	-- Fills the array that's used to gather the string contents
 		for i=0,5 do	
