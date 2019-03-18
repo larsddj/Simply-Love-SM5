@@ -139,7 +139,6 @@ local function Update(self, delta)
 				if player == PLAYER_2 then
 					sideBdown2BMT:settext(sideBdown22)
 				else
-					SCREENMAN:SystemMessage(mTextArray1[1])
 					sideBdown2BMT:settext(sideBdown21)
 				end
 			end
