@@ -9,12 +9,15 @@ local song_dir = GAMESTATE:GetCurrentSong():GetSongDir()
 local steps = GAMESTATE:GetCurrentSteps(player)
 local steps_type = ToEnumShortString( steps:GetStepsType() ):gsub("_", "-"):lower()
 local difficulty = ToEnumShortString( steps:GetDifficulty() )
-local bdown = GetStreamBreakdown(song_dir, steps_type, difficulty)
-local currentStreamNumber = 1
+local currentStreamNumberP2 = 1 
+local currentStreamNumberP1 = 1
+local bdown1, bdown2
+local seperateStreams2, seperateStreams1
 local PlayerState = GAMESTATE:GetPlayerState(player)
-local streams, current_measure, previous_measure, MeasureCounterBMT, sideBdown, sideBdownBMT, mTextArray
+local streams, current_measure, previous_measure, MeasureCounterBMT, sideBdown21, sideBdown22, sideBdown2BMT
 local current_count, stream_index, current_stream_length, defaultMText, subtractMText, sideText, text
 local actorAmount = 1
+local mTextArray1 ,mTextArray2
 
 -- We'll want to reset each of these values for each new song in the case of CourseMode
 local function InitializeMeasureCounter()
@@ -23,21 +26,40 @@ local function InitializeMeasureCounter()
 	stream_index = 1
 	current_stream_length = 0
 	previous_measure = nil
-	mTextArray = {}
+	mTextArray2 = {}
+	mTextArray1 = {}
 	actorAmount = 1
 
-	-- We need to split up the breakdown into individual streams
-	seperateStreams = Splitter(bdown, sep)
-	local sepstring = tostring(seperateStreams)
+	-- We need to split up the breakdown into individual streams for individual players
+	if player == PLAYER_2 then
+		bdown2 = GetStreamBreakdown(song_dir, steps_type, difficulty)
+		seperateStreams2 = Splitter(bdown2, sep)
+	else
+		bdown1 = GetStreamBreakdown(song_dir, steps_type, difficulty)
+		seperateStreams1 = Splitter(bdown1, sep)
+	end
 
 	-- Fills the array that's used to gather the string contents
+	-- Check what player is using the breakdown view to avoid using the same array for different charts in 2 player mode
+	-- TO-DO rewrite duplicate code with functions	
+	if player == PLAYER_2 then
 		for i=0,5 do	
-			if (seperateStreams[currentStreamNumber+i]) ~= nil then
-				mTextArray[currentStreamNumber+i] = seperateStreams[currentStreamNumber+i]
+			if (seperateStreams2[currentStreamNumberP2+i]) ~= nil then	
+					mTextArray2[currentStreamNumberP2+i] = seperateStreams2[currentStreamNumberP2+i]
 			else
-				mTextArray[currentStreamNumber+i] = " "
+					mTextArray2[currentStreamNumberP2+i] = " "
 			end
 		end
+	else
+		for i=0,5 do	
+			if (seperateStreams1[currentStreamNumberP1+i]) ~= nil then	
+					mTextArray1[currentStreamNumberP1+i] = seperateStreams1[currentStreamNumberP1+i]
+			else
+					mTextArray1[currentStreamNumberP1+i] = " "
+			end
+		end
+	end
+
 end
 
 -- Splitter function that is used to split the breakdown into individual streams
@@ -88,16 +110,37 @@ local function Update(self, delta)
 			else
 				stream_left = ""
 			end
+
 			if mods.BreakDownDisplay and mods.BreakDownDisplay ~= "Off" then
-				for i=0,5 do	
-					if (seperateStreams[currentStreamNumber+i]) ~= nil then
-						mTextArray[currentStreamNumber+i] = seperateStreams[currentStreamNumber+i]
-					else
-						mTextArray[currentStreamNumber+i] = " "
+
+				if player == PLAYER_2 then
+					for i=0,5 do	
+						if (seperateStreams2[currentStreamNumberP2+i]) ~= nil then	
+								mTextArray2[currentStreamNumberP2+i] = seperateStreams2[currentStreamNumberP2+i]
+						else
+								mTextArray2[currentStreamNumberP2+i] = " "
+						end
+					end
+				else
+					for i=0,5 do
+						if (seperateStreams1[currentStreamNumberP1+i]) ~= nil then	
+								mTextArray1[currentStreamNumberP1+i] = seperateStreams1[currentStreamNumberP1+i]
+						else
+								mTextArray1[currentStreamNumberP1+i] = " "
+						end
 					end
 				end
-				sideBdown = tostring(">"..mTextArray[currentStreamNumber].."  ".. '\n' ..mTextArray[currentStreamNumber+1]..'\n'..mTextArray[currentStreamNumber+2].. '\n'..mTextArray[currentStreamNumber+3].. '\n'..mTextArray[currentStreamNumber+4])
-				sideBdownBMT:settext(sideBdown)
+					
+				if player == PLAYER_2 then
+					sideBdown22 = tostring(">"..mTextArray2[currentStreamNumberP2].."  ".. '\n' ..mTextArray2[currentStreamNumberP2+1]..'\n'..mTextArray2[currentStreamNumberP2+2].. '\n'..mTextArray2[currentStreamNumberP2+3].. '\n'..mTextArray2[currentStreamNumberP2+4])
+				else
+					sideBdown21 = tostring(">"..mTextArray1[currentStreamNumberP1].."  ".. '\n' ..mTextArray1[currentStreamNumberP1+1]..'\n'..mTextArray1[currentStreamNumberP1+2].. '\n'..mTextArray1[currentStreamNumberP1+3].. '\n'..mTextArray1[currentStreamNumberP1+4])
+				end
+				if player == PLAYER_2 then
+					sideBdown2BMT:settext(sideBdown22)
+				else
+					sideBdown2BMT:settext(sideBdown21)
+				end
 			end
 			text = tostring(stream_left)
 			if mods.MeasureCounter and mods.MeasureCounter ~= "None" then
@@ -106,10 +149,18 @@ local function Update(self, delta)
 
 			if current_count > current_stream_length then
 				if mods.BreakDownDisplay and mods.BreakDownDisplay ~= "Off" then
-					sideBdownBMT:settext(mTextArray[currentStreamNumber+1].. '\n' ..mTextArray[currentStreamNumber+2]..'\n'..mTextArray[currentStreamNumber+3].. '\n'..mTextArray[currentStreamNumber+4].. '\n'..mTextArray[currentStreamNumber+5])
+					if player == PLAYER_2 then
+						sideBdown2BMT:settext(mTextArray2[currentStreamNumberP2+1].. '\n' ..mTextArray2[currentStreamNumberP2+2]..'\n'..mTextArray2[currentStreamNumberP2+3].. '\n'..mTextArray2[currentStreamNumberP2+4].. '\n'..mTextArray2[currentStreamNumberP2+5])
+					else
+						sideBdown2BMT:settext(mTextArray1[currentStreamNumberP1+1].. '\n' ..mTextArray1[currentStreamNumberP1+2]..'\n'..mTextArray1[currentStreamNumberP1+3].. '\n'..mTextArray1[currentStreamNumberP1+4].. '\n'..mTextArray1[currentStreamNumberP1+5])
+					end
 				end
 				stream_index = stream_index + 1
-				currentStreamNumber = currentStreamNumber + 1
+				if player == PLAYER_2 then
+					currentStreamNumberP2 = currentStreamNumberP2 + 1
+				else
+					currentStreamNumberP1 = currentStreamNumberP1 + 1
+				end
 				if mods.MeasureCounter and mods.MeasureCounter ~= "None" then
 					MeasureCounterBMT:settext( "" )
 				end
@@ -117,7 +168,12 @@ local function Update(self, delta)
 
 		else
 			if mods.BreakDownDisplay and mods.BreakDownDisplay ~= "Off" then
-				sideBdownBMT:settext(mTextArray[currentStreamNumber].. '\n' ..mTextArray[currentStreamNumber+1]..'\n'..mTextArray[currentStreamNumber+2].. '\n'..mTextArray[currentStreamNumber+3].. '\n'..mTextArray[currentStreamNumber+4])
+				if player == PLAYER_2 then
+					sideBdown2BMT:settext(mTextArray2[currentStreamNumberP2].. '\n' ..mTextArray2[currentStreamNumberP2+1]..'\n'..mTextArray2[currentStreamNumberP2+2].. '\n'..mTextArray2[currentStreamNumberP2+3].. '\n'..mTextArray2[currentStreamNumberP2+4])
+				else
+					sideBdown2BMT:settext(mTextArray1[currentStreamNumberP1].. '\n' ..mTextArray1[currentStreamNumberP1+1]..'\n'..mTextArray1[currentStreamNumberP1+2].. '\n'..mTextArray1[currentStreamNumberP1+3].. '\n'..mTextArray1[currentStreamNumberP1+4])
+				end
+
 			end
 			if mods.MeasureCounter and mods.MeasureCounter ~= "None" then
 				MeasureCounterBMT:settext( "" )
@@ -181,7 +237,7 @@ if mods.BreakDownDisplay and mods.BreakDownDisplay ~= "Off" then
 	af[#af+actorAmount] = Def.BitmapText{
 		Font="_wendy small",
 		InitCommand=function(self)
-			sideBdownBMT = self
+			sideBdown2BMT = self
 			local width = GAMESTATE:GetCurrentStyle(player):GetWidth(player)
 			local NumColumns = GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()
 			
