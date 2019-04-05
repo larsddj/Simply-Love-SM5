@@ -7,7 +7,8 @@ if mods.BackgroundFilter == "Off" then return end
 local FilterAlpha = {
 	Dark = 0.5,
 	Darker = 0.75,
-	Darkest = 0.95
+	Darkest = 0.95,
+	Darkestest = 1
 }
 
 local filter = Def.ActorFrame{ 
