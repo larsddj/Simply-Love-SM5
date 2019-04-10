@@ -42,7 +42,6 @@ return Def.Actor{
 				judgments[col][tns] = judgments[col][tns] + 1
 
 				if tns == "Miss" and held[params.Player][current_game][ buttons[current_game][col] ] then
-					SM("incrementing column " .. col )
 					judgments[col].MissBecauseHeld = judgments[col].MissBecauseHeld + 1
 				end
 			end
