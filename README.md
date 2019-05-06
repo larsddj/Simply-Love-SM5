@@ -7,7 +7,5 @@ This is a fork of Kauhsa's fork of the popular Stepmania 5 theme Simply Love
 
 ## Goals
 
-The goals of this fork are to unify all forked Simply Love build into a single 
-functional build with all the 'useful' features while also adding more features that 
-could assist even further with gameplay.
-
+This fork mostly just adds features that I personally want to use or are requested to be made.
+There might be some quirks here and there, if you find some please inform me of them.
