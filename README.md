@@ -1,6 +1,6 @@
-# Simply Borderline
+# Simply Love
 
-![Chirno Logo](https://i.ibb.co/MNfLt1P/borderline-doubleres.png)
+![Cirno Logo](https://i.ibb.co/0tpzpt6/Cirno-doubleres.png)
 ======================
 
 This is a fork of Kauhsa's fork of the popular Stepmania 5 theme Simply Love
