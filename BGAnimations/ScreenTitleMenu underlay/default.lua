@@ -1,7 +1,7 @@
 local TextColor = ThemePrefs.Get("RainbowMode") and Color.Black or Color.White
 local image = ThemePrefs.Get("VisualTheme")
 local SongStats
-if image == "Borderline" then
+if image == "Border" then
 	SongStats = SONGMAN:GetNumSongs() .. " 17's in "
 else
 	SongStats = SONGMAN:GetNumSongs() .. " songs in "
@@ -22,8 +22,8 @@ end
 local sm_version = ""
 
 local banner
-if image == "Borderline" then
-	banner = "borderline (doubleres)"
+if image == "Border" then
+	banner = "border (doubleres)"
 else
 	banner = game
 end

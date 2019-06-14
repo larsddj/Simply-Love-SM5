@@ -10,8 +10,8 @@ local t = Def.ActorFrame{
 	InitCommand=function(self)
 		self:y( image == "Hearts" and _screen.cy or _screen.cy+10 )		
 	end,
-		if image == "Borderline" then 
-		LoadActor(THEME:GetPathG("", "_logos/" .. "borderline"))..{
+		if image == "Border" then 
+		LoadActor(THEME:GetPathG("", "_logos/" .. "border"))..{
 			InitCommand=function(self)
 				self:xy(_screen.cx, -16):zoom( game=="pump" and 0.2 or 0.205 ):cropright(1)
 			end,
